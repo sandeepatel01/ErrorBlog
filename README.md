@@ -65,3 +65,17 @@ Performant, flexible and extensible forms with easy-to-use validation.
 ```jsx
 npm i react-hook-form
 ```
+
+### Environment variables
+
+Environment variables are a way to store configuration data outside of your codebase. They are often used to manage settings that can vary between different environments, such as development, testing, and production.
+
+- Vite exposes env variables on the special **`import.meta.env`** object, which are statically replaced at build time. Some built-in variables are available in all cases:
+
+```jsx
+VITE_APPWRITE_URL = "test environment";
+VITE_APPWRITE_PROJECT = "test project";
+VITE_APPWRITE_DATABASE_ID = "test database";
+VITE_APPWRITE_COLLECTION_ID = "test collection";
+VITE_APPWRITE_BUCKET_ID = "test bucket";
+```
