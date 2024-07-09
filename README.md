@@ -18,6 +18,8 @@ The **Redux Toolkit** package is intended to be the standard way to write [Re
 npm i @reduxjs/toolkit
 ```
 
+"
+
 2. **React Redux**
 
 [React Redux](https://github.com/reduxjs/react-redux) is the official [React](https://react.dev/) UI bindings layer for [Redux](https://redux.js.org/). It lets your React components read data from a Redux store, and dispatch actions to the store to update state.
@@ -79,3 +81,30 @@ VITE_APPWRITE_DATABASE_ID = "test database";
 VITE_APPWRITE_COLLECTION_ID = "test collection";
 VITE_APPWRITE_BUCKET_ID = "test bucket";
 ```
+
+### **Appwrite [ Backend Setup ]**
+
+1. create project [ErrorBlog]
+2. Go to setting
+
+- find API Endpoint
+- find Project ID
+  And Past in env file
+
+3. Go to Databases → create new DB [EBlog] & copy db id and past in env file
+4. Go to collection → create the new collection[articles] & find and copy the collection id and past in env file
+5. articles **Permissions → give the Permissions of all users to apply CRUD operation**
+6. Go to **articles → create the Attributes**
+
+- title
+- content
+- featuredImage
+- status
+- userId
+
+7. Go to **articles → create Indexes**
+
+- status
+
+8. Go to storage → find **BUCKET ID**
+9. Go to images → give the **Permissions of all users to apply the CRUD operation**
