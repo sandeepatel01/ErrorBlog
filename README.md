@@ -18,8 +18,6 @@ The **Redux Toolkit** package is intended to be the standard way to write [Re
 npm i @reduxjs/toolkit
 ```
 
-"
-
 2. **React Redux**
 
 [React Redux](https://github.com/reduxjs/react-redux) is the official [React](https://react.dev/) UI bindings layer for [Redux](https://redux.js.org/). It lets your React components read data from a Redux store, and dispatch actions to the store to update state.
