@@ -70,6 +70,30 @@ export class Service {
           )
      }
 
+     // file upload service 
+     async uploadFile(file) {
+          return await this.storage.createFile(
+               config.appwriteBucketId,
+               ID.unique(),
+               file,
+          )
+     }
+
+     async deleteFile(filedId) {
+          await this.storage.deleteFile(
+               config.appwriteBucketId,
+               filedId,
+          )
+          return true
+     }
+
+     getFilePreview(fileId) {
+          return this.storage.getFilePreview(
+               config.appwriteBucketId,
+               fileId,
+          )
+     }
+
 }
 
 
