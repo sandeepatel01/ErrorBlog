@@ -113,6 +113,153 @@ VITE_APPWRITE_BUCKET_ID = "test bucket";
 2. create [ auth.service.js ] file in appwrite folder
 3. code
 
+- import a configuration file in JavaScript
+
+```jsx
+import config from "../config/config.js";
+```
+
+- importing specific modules from the Appwrite SDK in JavaScript, which is commonly used for interacting with Appwrite's backend services.
+
+```jsx
+import { Client, Account, ID } from "appwrite";
+```
+
+- Defining the `AuthService` Class
+
+```jsx
+export class AuthService {
+  // Define methods and properties here
+}
+```
+
+- **`export`**: This keyword makes the `AuthService` class available for import in other files.
+- **`class AuthService {}`**: This defines a class named `AuthService`. Inside the curly braces, you can define methods and properties that belong to this class.
+
+- Creating an Instance of `AuthService`
+
+```jsx
+const authservice = new AuthService();
+```
+
+- **`const authservice`**: This declares a constant variable named `authservice`.
+- **`new AuthService()`**: This creates a new instance of the `AuthService` class. The `new` keyword is used to instantiate objects from a class, meaning `authservice` is an object that follows the blueprint of the `AuthService` class.
+
+- Exporting the Instance
+
+```jsx
+export default authservice;
+```
+
+- **`export default`**: This keyword is used to specify the default export from the module. In this case, it's exporting the `authservice` instance.
+- **`authservice`**: This is the instance of the `AuthService` class that was created earlier.
+
+- Define properties
+
+```jsx
+export class AuthService {
+  client = new Client();
+  account;
+}
+
+const authservice = new AuthService();
+
+export default authservice;
+```
+
+- create a constructor → constructor is setting up the Appwrite client and initializing the account management functionality.
+
+```jsx
+   constructor() {
+          this.client
+               .setEndpoint(config.appwriteUrl)
+               .setProject(config.appwriteProjectId);
+          this.account = new Account(this.client);
+
+     }
+```
+
+- The `createAccount` method you've provided is part of an `AuthService` class and is designed to create a new user account using the Appwrite service.
+
+```jsx
+   async createAccount({ email, password, name }) {
+          const userAccount = await this.account.create(ID.unique(), email, password, name);
+          if (userAccount) {
+               // call another method
+               return this.login({ email, password });
+          } else {
+               return userAccount;
+          }
+
+     }
+```
+
+- **`async`**: This keyword makes the function asynchronous, allowing you to use `await` inside it. It will return a promise.
+- **`createAccount({ email, password, name })`**: This method takes an object with `email`, `password`, and `name` as properties. These are the details required to create a new user account.
+- **`await`**: Pauses the execution of the function until the promise is resolved. In this case, it waits for the account creation process to complete.
+- **`this.account.create(ID.unique(), email, password, name)`**: Calls the `create` method on the `Account` instance. This method creates a new user account with:
+  - **`ID.unique()`**: Generates a unique ID for the user account.
+  - **`email`**: The email address of the user.
+  - **`password`**: The user's password.
+  - **`name`**: The user's name.
+- **`if (userAccount)`**: Checks if the `userAccount` object was successfully created.
+- **`this.login({ email, password })`**: If the account creation is successful, the method calls `login` (presumably another method within the same `AuthService` class) to log the user in automatically. This ensures that the user is immediately authenticated after account creation.
+- **`return this.login({ email, password })`**: The method returns the result of the login process, which could include the user's session or authentication details.
+- **`else { return userAccount; }`**: If account creation fails for any reason, it returns the `userAccount` object, which could include error information.
+
+- The `login` method you've provided is part of the `AuthService` class and is designed to log in a user using their email and password.
+
+```jsx
+ async login(email, password) {
+          return await this.account.createEmailPasswordSession(email, password);
+     }
+```
+
+- **`async`**: The method is marked as asynchronous, which allows you to use the `await` keyword inside the method. It will return a promise.
+- **`login(email, password)`**: The method takes two parameters, `email` and `password`, which are the credentials the user provides to log in
+- **`await`**: Pauses the execution of the function until the promise returned by `createEmailPasswordSession` is resolved.
+- **`this.account.createEmailPasswordSession(email, password)`**: This line calls the `createEmailPasswordSession` method from the Appwrite SDK’s `Account` service. This method:
+
+  - **`email`**: The user's email address.
+  - **`password`**: The user's password.
+  - If the credentials are correct, Appwrite will create a new session for the user, effectively logging them in
+
+- The `getCurrentUser` method in your `AuthService` class is designed to retrieve the currently authenticated user's information.
+
+```jsx
+ async getCurrentUser() {
+          const currentUser = await this.account.get();
+          if (currentUser) {
+               return currentUser;
+          } else {
+               return null;
+          }
+     }
+```
+
+- **`async`**: This keyword indicates that the method is asynchronous, meaning it will return a promise and allows you to use `await` within the function.
+- **`getCurrentUser()`**: This method does not take any parameters and is meant to fetch the details of the currently logged-in user
+- **`await`**: This pauses the execution of the function until the promise returned by `this.account.get()` is resolved.
+- **`this.account.get()`**: Calls the `get` method from the Appwrite SDK’s `Account` service. This method retrieves the currently authenticated user's details, such as their ID, email, name, and other metadata.
+- **`if (currentUser)`**: This checks if the `currentUser` object was successfully retrieved.
+- **`return currentUser;`**: If `currentUser` is not null or undefined, the method returns the user's information.
+- **`else { return null; }`**: If there is no currently authenticated user, the method returns `null`
+
+- The `logout` method in your `AuthService` class is designed to log out the currently authenticated user by deleting their session(s).
+
+```jsx
+ async logout() {
+          return await this.account.deleteSessions();
+     }
+```
+
+- **`async`**: The method is asynchronous, meaning it will return a promise and allows the use of `await` within the method.
+- **`logout()`**: The method doesn't take any parameters and is meant to handle the logout process for the user
+- **`await`**: Pauses the function's execution until the promise returned by `deleteSessions()` is resolved.
+- **`this.account.deleteSessions()`**: This calls the `deleteSessions` method from the Appwrite SDK’s `Account` service. This method deletes all active sessions for the user, effectively logging them out from all devices or platforms where they were logged in.
+
+### Final code
+
 ```jsx
 import config from "../config/config.js";
 import { Client, Account, ID } from "appwrite";
