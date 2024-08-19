@@ -490,3 +490,123 @@ export default service;
 ```
 
 - A single instance of the `Service` class is created and exported as the default export. This allows other parts of the application to easily import and use this service for interacting with the Appwrite backend.
+
+### **Configure Redux Toolkit**
+
+To configure Redux Toolkit in your project, follow these steps:
+
+### 1. Install Redux Toolkit and React-Redux
+
+First, you need to install Redux Toolkit and React-Redux:
+
+```bash
+npm install @reduxjs/toolkit react-redux
+```
+
+### 2. Create a Redux Store
+
+Next, create a `store.js` file to set up your Redux store using `configureStore` from Redux Toolkit:
+
+```jsx
+// src/store.js
+import { configureStore } from "@reduxjs/toolkit";
+import rootReducer from "./slices"; // This should point to your root reducer
+
+const store = configureStore({
+  reducer: rootReducer,
+});
+
+export default store;
+```
+
+### 3. Create Slices
+
+Slices are a key feature in Redux Toolkit. They combine the logic of reducers and actions. You can create a slice like this:
+
+```jsx
+// src/slices/counterSlice.js
+import { createSlice } from "@reduxjs/toolkit";
+
+const counterSlice = createSlice({
+  name: "counter",
+  initialState: { value: 0 },
+  reducers: {
+    increment: (state) => {
+      state.value += 1;
+    },
+    decrement: (state) => {
+      state.value -= 1;
+    },
+    incrementByAmount: (state, action) => {
+      state.value += action.payload;
+    },
+  },
+});
+
+export const { increment, decrement, incrementByAmount } = counterSlice.actions;
+
+export default counterSlice.reducer;
+```
+
+### 4. Combine Slices
+
+If you have multiple slices, combine them in your `rootReducer`:
+
+```jsx
+// src/slices/index.js
+import { combineReducers } from "redux";
+import counterReducer from "./counterSlice";
+
+const rootReducer = combineReducers({
+  counter: counterReducer,
+  // Add other reducers here
+});
+
+export default rootReducer;
+```
+
+### 5. Provide the Store to Your App
+
+In your main `index.js` or `App.js` file, wrap your app with the `Provider` component from `react-redux` and pass the store to it:
+
+```jsx
+// src/index.js
+import React from "react";
+import ReactDOM from "react-dom";
+import { Provider } from "react-redux";
+import store from "./store";
+import App from "./App";
+
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById("root")
+);
+```
+
+### 6. Use Redux in Components
+
+Finally, you can use `useSelector` to read from the store and `useDispatch` to dispatch actions in your components:
+
+```jsx
+// src/components/Counter.js
+import React from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { increment, decrement } from "../slices/counterSlice";
+
+const Counter = () => {
+  const count = useSelector((state) => state.counter.value);
+  const dispatch = useDispatch();
+
+  return (
+    <div>
+      <h1>{count}</h1>
+      <button onClick={() => dispatch(increment())}>Increment</button>
+      <button onClick={() => dispatch(decrement())}>Decrement</button>
+    </div>
+  );
+};
+
+export default Counter;
+```
