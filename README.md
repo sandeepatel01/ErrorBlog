@@ -432,9 +432,9 @@ import { Client, ID, Databases, Storage, Query } from "appwrite";
 
 ```jsx
 export class Service {
-     client = new Client();
-     databases;
-     storage;
+  client = new Client();
+  databases;
+  storage;
 }
 ```
 
@@ -508,12 +508,11 @@ npm install @reduxjs/toolkit react-redux
 Next, create a `store.js` file to set up your Redux store using `configureStore` from Redux Toolkit:
 
 ```jsx
-// src/store.js
+// src/store/store.js
 import { configureStore } from "@reduxjs/toolkit";
-import rootReducer from "./slices"; // This should point to your root reducer
 
 const store = configureStore({
-  reducer: rootReducer,
+  reducer: {},
 });
 
 export default store;
@@ -524,45 +523,32 @@ export default store;
 Slices are a key feature in Redux Toolkit. They combine the logic of reducers and actions. You can create a slice like this:
 
 ```jsx
-// src/slices/counterSlice.js
+// src/store/authSlice.js
 import { createSlice } from "@reduxjs/toolkit";
 
-const counterSlice = createSlice({
-  name: "counter",
-  initialState: { value: 0 },
+const initialState = {
+  status: false,
+  userData: null,
+};
+
+const authSlice = createSlice({
+  name: "auth",
+  initialState,
   reducers: {
-    increment: (state) => {
-      state.value += 1;
+    login: (state, action) => {
+      state.status = true;
+      state.userData = action.payload.userData;
     },
-    decrement: (state) => {
-      state.value -= 1;
-    },
-    incrementByAmount: (state, action) => {
-      state.value += action.payload;
+    logout: (state) => {
+      state.status = false;
+      state.userData = null;
     },
   },
 });
 
-export const { increment, decrement, incrementByAmount } = counterSlice.actions;
+export const { login, logout } = authSlice.actions;
 
-export default counterSlice.reducer;
-```
-
-### 4. Combine Slices
-
-If you have multiple slices, combine them in your `rootReducer`:
-
-```jsx
-// src/slices/index.js
-import { combineReducers } from "redux";
-import counterReducer from "./counterSlice";
-
-const rootReducer = combineReducers({
-  counter: counterReducer,
-  // Add other reducers here
-});
-
-export default rootReducer;
+export default authSlice.reducer;
 ```
 
 ### 5. Provide the Store to Your App
@@ -570,43 +556,16 @@ export default rootReducer;
 In your main `index.js` or `App.js` file, wrap your app with the `Provider` component from `react-redux` and pass the store to it:
 
 ```jsx
-// src/index.js
-import React from "react";
-import ReactDOM from "react-dom";
+// src/main.jsx
+import ReactDOM from "react-dom/client";
+import App from "./App.jsx";
+import "./index.css";
 import { Provider } from "react-redux";
-import store from "./store";
-import App from "./App";
+import store from "./store/store.js";
 
-ReactDOM.render(
+ReactDOM.createRoot(document.getElementById("root")).render(
   <Provider store={store}>
     <App />
-  </Provider>,
-  document.getElementById("root")
+  </Provider>
 );
-```
-
-### 6. Use Redux in Components
-
-Finally, you can use `useSelector` to read from the store and `useDispatch` to dispatch actions in your components:
-
-```jsx
-// src/components/Counter.js
-import React from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { increment, decrement } from "../slices/counterSlice";
-
-const Counter = () => {
-  const count = useSelector((state) => state.counter.value);
-  const dispatch = useDispatch();
-
-  return (
-    <div>
-      <h1>{count}</h1>
-      <button onClick={() => dispatch(increment())}>Increment</button>
-      <button onClick={() => dispatch(decrement())}>Decrement</button>
-    </div>
-  );
-};
-
-export default Counter;
 ```
