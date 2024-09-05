@@ -435,7 +435,7 @@ export class Service {
      client = new Client();
      databases;
      storage;
-
+}
 ```
 
 - The `Service` class encapsulates the logic for interacting with Appwrite's services.
