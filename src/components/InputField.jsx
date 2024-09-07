@@ -1,6 +1,6 @@
 import { useId } from "react";
 import React from "react";
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 
 const InputField = React.forwardRef(function Input(
   { type = "text", label, className = "", ...props },
@@ -27,10 +27,10 @@ const InputField = React.forwardRef(function Input(
   );
 });
 
-InputField.propTypes = {
-  type: PropTypes.string,
-  label: PropTypes.string,
-  className: PropTypes.string,
-};
+// InputField.propTypes = {
+//   type: PropTypes.string,
+//   label: PropTypes.string,
+//   className: PropTypes.string,
+// };
 
 export default InputField;

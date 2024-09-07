@@ -1,5 +1,5 @@
 import React, { useId } from "react";
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 
 function SelectField({ options, label, className = "", ...props }, ref) {
   const id = useId();
@@ -23,10 +23,10 @@ function SelectField({ options, label, className = "", ...props }, ref) {
   );
 }
 
-SelectField.propTypes = {
-  options: PropTypes.arrayOf(PropTypes.string).isRequired,
-  label: PropTypes.string,
-  className: PropTypes.string,
-};
+// SelectField.propTypes = {
+//   options: PropTypes.arrayOf(PropTypes.string).isRequired,
+//   label: PropTypes.string,
+//   className: PropTypes.string,
+// };
 
 export default React.forwardRef(SelectField);
